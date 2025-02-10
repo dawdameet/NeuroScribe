@@ -34,3 +34,9 @@ V1.0.1
 ✅ No Python changes required – model architecture, optimizer, loss function, and dataset completely controlled by YAML.
 ✅ Switching from a regression task (house prices) to a  classification task (MNIST digits) by just modifying YAML.
 ✅ Demonstrates self-sufficiency of your YAML-driven AI language.
+
+
+
+
+V1.0.2
+✅The Language identifies by .meet extension
