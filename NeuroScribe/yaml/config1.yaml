@@ -1,0 +1,37 @@
+model:
+  name: "ImprovedClassifier"
+  type: "Sequential"
+  layers:
+    - type: "Linear"
+      input_size: 784
+      output_size: 128
+      activation: "LeakyReLU"
+    - type: "BatchNorm"
+      size: 128
+    - type: "Dropout"
+      p: 0.3
+    - type: "Linear"
+      input_size: 128
+      output_size: 64
+      activation: "LeakyReLU"
+    - type: "BatchNorm"
+      size: 64
+    - type: "Dropout"
+      p: 0.2
+    - type: "Linear"
+      input_size: 64
+      output_size: 10  # No Softmax
+  optimizer:
+    type: "Adam"
+    learning_rate: 0.0005
+  loss: "CrossEntropyLoss"
+  metrics: ["accuracy"]
+
+training:
+  epochs: 20
+  batch_size: 64
+  validation_split: 0.2
+  early_stopping: True
+  patience: 3  # Stop if validation loss doesn't improve for 3 epochs
+  save_model: True
+  model_path: "saved_model.pth"
