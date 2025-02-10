@@ -1,6 +1,6 @@
-# AILang - AI-Native Programming Language
+# NEUROSCRIBE - AI-Native Programming Language
 
-AILang is a YAML-like AI-native programming language designed for defining and training machine learning models with minimal Python code. With AILang, you can specify your entire model architecture, dataset, training parameters, and optimizations in a `.meet` configuration file, making AI development more intuitive and efficient.
+NEUROSCRIBE is a YAML-like AI-native programming language designed for defining and training machine learning models with minimal Python code. With NEUROSCRIBE, you can specify your entire model architecture, dataset, training parameters, and optimizations in a `.meet` configuration file, making AI development more intuitive and efficient.
 
 ## 🚀 Features
 
@@ -36,8 +36,8 @@ AILang is a YAML-like AI-native programming language designed for defining and t
 ### **Installation**
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/AILang.git
-   cd AILang
+   git clone https://github.com/yourusername/NEUROSCRIBE.git
+   cd NEUROSCRIBE
    ```
 2. Create a virtual environment and install dependencies:
    ```sh
@@ -69,7 +69,7 @@ python stable.py config.meet
 
 ---
 
-## 🤖 How AILang Works
+## 🤖 How NEUROSCRIBE Works
 1. Parses the `.meet` file (YAML-based syntax).
 2. Loads dataset, preprocesses features, and applies encoding.
 3. Defines the neural network architecture dynamically.
@@ -78,7 +78,7 @@ python stable.py config.meet
 
 ---
 
-## 💡 Why AILang?
+## 💡 Why NEUROSCRIBE?
 🔹 **No Python Code Needed** – Define models purely using `.meet` files.
 🔹 **Flexible & Modular** – Switch datasets, architectures, and training settings seamlessly.
 🔹 **Optimized for AI/ML** – Native support for deep learning best practices.
