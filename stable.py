@@ -5,56 +5,33 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset, random_split
 from sklearn.preprocessing import LabelEncoder
-
-# Load YAML configuration
 def load_config(yaml_path):
     with open(yaml_path, 'r') as file:
         config = yaml.safe_load(file)
     return config
-
-# Load dataset from CSV
-
 def load_dataset(config):
     if config['dataset']['type'] == 'csv':
         df = pd.read_csv(config['dataset']['path'])
-
-        # Ensure all columns are in the dataset
         assert set(config['dataset']['features'] + [config['dataset']['target_column']]).issubset(df.columns), \
             "Some specified features are missing from the dataset"
-
-        # Convert categorical columns to numeric using Label Encoding
         categorical_columns = ['mainroad', 'guestroom', 'basement', 'hotwaterheating', 'airconditioning', 'prefarea', 'furnishingstatus']
         for col in categorical_columns:
             if col in df.columns:
                 df[col] = LabelEncoder().fit_transform(df[col])
-
-        # Fill missing values with 0
         df = df.fillna(0)
-
-        # Extract features and labels
         features = df[config['dataset']['features']].values.astype('float32')
         labels = df[config['dataset']['target_column']].values.astype('float32')
-
-        # Convert to PyTorch tensors
         features = torch.tensor(features, dtype=torch.float32)
         labels = torch.tensor(labels, dtype=torch.float32).unsqueeze(1)  # Ensure correct shape
-
-        # Create dataset
         dataset = TensorDataset(features, labels)
-
-        # Split into train and validation sets
         train_size = int((1 - config['training']['validation_split']) * len(dataset))
         val_size = len(dataset) - train_size
         train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-
         train_loader = DataLoader(train_dataset, batch_size=config['training']['batch_size'], shuffle=True)
         val_loader = DataLoader(val_dataset, batch_size=config['training']['batch_size'], shuffle=False)
-
         return train_loader, val_loader
     else:
         raise ValueError("Unsupported dataset type")
-
-# Define the model dynamically
 def build_model(config):
     layers = []
     for layer in config['model']['layers']:
@@ -66,14 +43,11 @@ def build_model(config):
         elif layer['type'] == 'Dropout':
             layers.append(nn.Dropout(layer['p']))
     return nn.Sequential(*layers)
-
-# Training loop
 def train_model(model, train_loader, val_loader, config):
     optimizer = getattr(optim, config['model']['optimizer']['type'])(
         model.parameters(), lr=config['model']['optimizer']['learning_rate']
     )
     criterion = getattr(nn, config['model']['loss'])()
-    
     for epoch in range(config['training']['epochs']):
         model.train()
         running_loss = 0.0
@@ -84,10 +58,7 @@ def train_model(model, train_loader, val_loader, config):
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-        
         print(f"Epoch {epoch+1}, Loss: {running_loss/len(train_loader)}")
-        
-        # Validation
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
@@ -96,13 +67,10 @@ def train_model(model, train_loader, val_loader, config):
                 loss = criterion(outputs.squeeze(), labels)
                 val_loss += loss.item()
         print(f"Validation Loss: {val_loss/len(val_loader)}")
-
-# Main function
 def main(yaml_path):
     config = load_config(yaml_path)
     model = build_model(config)
     train_loader, val_loader = load_dataset(config)
     train_model(model, train_loader, val_loader, config)
-
 if __name__ == "__main__":
     main("selfsuff.yaml")
