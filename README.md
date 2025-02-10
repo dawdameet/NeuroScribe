@@ -1,125 +1,107 @@
-## Why This AI-Native Language is Better Than Python for AI/ML**  
+# AILang - AI-Native Programming Language
 
-### **🚀 Why Choose This Language Over Python?**  
-Python is the dominant language for AI/ML, but it comes with **overhead** that slows down execution and increases complexity. This AI-native programming language is designed to be:  
+AILang is a YAML-like AI-native programming language designed for defining and training machine learning models with minimal Python code. With AILang, you can specify your entire model architecture, dataset, training parameters, and optimizations in a `.meet` configuration file, making AI development more intuitive and efficient.
 
-✅ **Faster Execution**: Removes Python’s dynamic typing overhead, allowing direct tensor computations.  
-✅ **AI-Optimized Syntax**: Simple, declarative, YAML-like structure avoids boilerplate code.  
-✅ **Built-in Differentiation**: No need for external autograd libraries—automatic differentiation is native.  
-✅ **Lightweight & Efficient**: Avoids Python’s GIL issues, making multi-threaded GPU execution smoother.  
-✅ **Low-Level Control**: Designed for **direct hardware optimizations** while still being high-level.  
+## 🚀 Features
+
+### **Current Version: v1.0.1**
+- ✅ Define and train any neural network model entirely using `.meet` files.
+- ✅ Supports dataset loading, preprocessing, and training via configuration.
+- ✅ Self-sufficient: No need to modify Python code to experiment with different models.
+- ✅ Handles categorical encoding, missing values, and validation split automatically.
+- ✅ Seamless integration with PyTorch.
+
+### **Changelogs**
+#### **v0.2.0**
+- ✅ Batch Normalization for stabilized training.
+- ✅ LeakyReLU to prevent dead neurons.
+- ✅ Improved Dropout for overfitting reduction.
+- ✅ Early Stopping for optimized training.
+- ✅ Automatic Model Saving.
+- ✅ More flexibility in activation functions, optimizers, and dropout settings.
+
+#### **v0.3.0**
+- ✅ Xavier/He Weight Initialization.
+- ✅ ReduceLROnPlateau for adaptive learning rate adjustment.
+- ✅ Gradient Clipping to prevent exploding gradients.
+- ✅ AdamW Optimizer with weight decay.
+- ✅ Dataset switching (MNIST, CIFAR-10, etc.).
+- ✅ Data augmentation for CIFAR-10.
+- ✅ Improved logging and debugging.
 
 ---
 
-### **🔥 Comparison: Same AI Model in Different Languages**  
+## 📜 Quick Start
 
-#### **1️⃣ Our AI Language (`.ai` file)**
+### **Installation**
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/AILang.git
+   cd AILang
+   ```
+2. Create a virtual environment and install dependencies:
+   ```sh
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+### **Usage**
+Define your model in a `.meet` file (e.g., `config.meet`):
 ```yaml
-dataset = "data.csv"
-split = (features=10, target=1)
-
-model = NeuralNetwork {
-    layers = [
-        Dense(64) -> relu,
-        Dense(1) -> sigmoid
-    ]
-    optimizer = adam
-    loss = binary_crossentropy
-}
-
-train model {
-    epochs = 10
-    batch = 32
-    device = auto
-}
+model:
+  type: "MLP"
+  layers: [128, 64, 10]
+  activation: "relu"
+optimizer:
+  type: "adam"
+  learning_rate: 0.001
+dataset:
+  path: "mnist_train.csv"
+  features: [c0, c1, ..., c63]
+  target_column: "target"
 ```
-✅ **Minimal syntax**  
-✅ **No need to manually define layers & forward pass**  
-✅ **Autodetects dataset structure**  
 
----
-
-#### **2️⃣ Python (PyTorch)**
-```python
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import pandas as pd
-
-# Load Data
-df = pd.read_csv("data.csv")
-X, y = df.iloc[:, :-1], df.iloc[:, -1]
-
-# Define Model
-class NeuralNetwork(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.fc1 = nn.Linear(10, 64)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(64, 1)
-        self.sigmoid = nn.Sigmoid()
-
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-        return self.sigmoid(x)
-
-# Training
-model = NeuralNetwork()
-optimizer = optim.Adam(model.parameters())
-loss_fn = nn.BCELoss()
-
-for epoch in range(10):
-    optimizer.zero_grad()
-    y_pred = model(torch.tensor(X.values, dtype=torch.float32))
-    loss = loss_fn(y_pred, torch.tensor(y.values, dtype=torch.float32))
-    loss.backward()
-    optimizer.step()
+Run training with:
+```sh
+python stable.py config.meet
 ```
-❌ **Boilerplate-heavy**  
-❌ **Manual tensor conversions**  
-❌ **Must define forward pass explicitly**  
 
 ---
 
-#### **3️⃣ C++ (TensorFlow C++ API)**
-```cpp
-#include <tensorflow/core/public/session.h>
-#include <tensorflow/core/platform/env.h>
-
-int main() {
-    tensorflow::Session* session;
-    tensorflow::SessionOptions options;
-    TF_CHECK_OK(tensorflow::NewSession(options, &session));
-
-    tensorflow::GraphDef graph_def;
-    TF_CHECK_OK(tensorflow::ReadBinaryProto(tensorflow::Env::Default(), "model.pb", &graph_def));
-    TF_CHECK_OK(session->Create(graph_def));
-
-    // Run the model (omitting dataset loading for brevity)
-}
-```
-❌ **Too low-level**  
-❌ **Requires manual memory management**  
-❌ **Verbose & complex**  
+## 🤖 How AILang Works
+1. Parses the `.meet` file (YAML-based syntax).
+2. Loads dataset, preprocesses features, and applies encoding.
+3. Defines the neural network architecture dynamically.
+4. Trains the model using the specified optimizer and loss function.
+5. Saves the trained model for inference.
 
 ---
 
-### **🔥 Key Takeaways**
-| Feature               | AI-Native Language | Python (PyTorch) | C++ (TensorFlow) |
-|----------------------|------------------|-----------------|-----------------|
-| **Syntax Simplicity** | ✅ Minimal | ❌ Verbose | ❌ Complex |
-| **Performance**      | ✅ Faster | ❌ Overhead | ✅ High |
-| **Autograd Support** | ✅ Built-in | ✅ Yes | ❌ Manual |
-| **Low-Level Control** | ✅ Possible | ❌ No | ✅ Yes |
-| **Ease of Use**      | ✅ Beginner-friendly | ✅ Medium | ❌ Hard |
-
-### **🚀 The Future**
-✅ **LLVM Backend** for native compilation  
-✅ **Automatic Optimizations** (JIT, GPU acceleration)  
-✅ **VSCode Extension** for `.ai` support  
+## 💡 Why AILang?
+🔹 **No Python Code Needed** – Define models purely using `.meet` files.
+🔹 **Flexible & Modular** – Switch datasets, architectures, and training settings seamlessly.
+🔹 **Optimized for AI/ML** – Native support for deep learning best practices.
 
 ---
 
-This AI-native language is a **next-gen alternative** to Python, balancing **high performance with easy syntax**. 🚀
+## 📌 Roadmap
+🔜 Custom AI model inference from `.meet` files.
+🔜 Support for RNNs, CNNs, and Transformers.
+🔜 AutoML features for hyperparameter tuning.
+
+---
+
+## 🤝 Contributing
+We welcome contributions! Feel free to fork the repo, create a new branch, and submit a PR. 🚀
+
+---
+
+## 📄 License
+MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+## 🌟 Show Your Support
+If you find this project useful, give it a ⭐ on GitHub and share it with others!
+
