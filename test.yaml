@@ -1,0 +1,5 @@
+type: NeuralNetwork
+reluNeeded: false
+dataset:
+  - Seq
+  - Soft
