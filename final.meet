@@ -1,0 +1,45 @@
+model:
+  name: "HousePricePredictor"
+  type: "Sequential"
+  layers:
+    - type: "Linear"
+      input_size: 12  # Number of features (excluding target 'price')
+      output_size: 64
+      activation: "ReLU"
+    - type: "Dropout"
+      p: 0.3
+    - type: "Linear"
+      input_size: 64
+      output_size: 32
+      activation: "ReLU"
+    - type: "Linear"
+      input_size: 32
+      output_size: 1  # Regression output
+  optimizer:
+    type: "Adam"
+    learning_rate: 0.001
+  loss: "MSELoss"  # Mean Squared Error for regression
+  metrics: ["MSE", "MAE"]
+
+dataset:
+  type: "csv"
+  path: "Housing.csv"
+  target_column: "price"
+  features:
+    - "area"
+    - "bedrooms"
+    - "bathrooms"
+    - "stories"
+    - "mainroad"
+    - "guestroom"
+    - "basement"
+    - "hotwaterheating"
+    - "airconditioning"
+    - "parking"
+    - "prefarea"
+    - "furnishingstatus"
+
+training:
+  epochs: 50
+  batch_size: 32
+  validation_split: 0.2
