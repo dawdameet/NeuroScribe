@@ -29,3 +29,8 @@ V1.0.1
 ✅ Missing values are handled.
 ✅ Labels are reshaped to avoid PyTorch tensor shape issues.
 ✅ Validation split is correctly applied.
+
+--------------- FOR selfsuff.yaml --------------------
+✅ No Python changes required – model architecture, optimizer, loss function, and dataset completely controlled by YAML.
+✅ Switching from a regression task (house prices) to a  classification task (MNIST digits) by just modifying YAML.
+✅ Demonstrates self-sufficiency of your YAML-driven AI language.

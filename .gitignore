@@ -1,2 +1,10 @@
 /venv
 /data
+main.py
+index.py
+data.csv
+mnist_train.csv
+selfsuff.yaml
+test.py
+test.yaml
+test1.py
