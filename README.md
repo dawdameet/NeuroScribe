@@ -103,4 +103,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 ---
 
 ## 🌟 Show Your Support
-If you find this project useful, give it a ⭐ on GitHub and share it with others!
+If you find this project useful, give it a ⭐ on GitHub and share it with others.
